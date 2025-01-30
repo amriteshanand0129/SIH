@@ -6,6 +6,8 @@
 ## 🌟 About the Project  
 Freelancia is a feature-rich freelancing platform designed to **connect businesses with skilled freelancers** efficiently. This platform ensures **seamless job postings, secure payments, and smooth communication**.
 
+_This project represents a collaborative endeavor by our six-member team, undertaken during our participation in the Gear Up Season 3: Gateway to Smart India Hackathon._
+
 ### 👨‍💻 Contributors
 - 👤 Amritesh Anand: [GitHub](https://github.com/amriteshanand0129)
 [LinkedIn](https://www.linkedin.com/in/amritesh-anand/)
