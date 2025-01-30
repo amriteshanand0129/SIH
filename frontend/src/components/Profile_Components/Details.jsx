@@ -90,7 +90,7 @@
 //           ) : (
 //             <p>Jobs Applied: 0</p>
 //           )}
-          
+
 //           {profileData.jobsUndertaken?.length != 0 ? (
 //             <div className="text-white">
 //               <h2>
@@ -124,7 +124,7 @@
 //           {(profileData.reviews && profileData.reviews.length != 0 )? (
 //             <div className="text-white">
 //               <h2>
-//               Reviews: 
+//               Reviews:
 //                 {profileData.reviews.map((review, index) => (
 //                   <h2 className="text-white" key={index}>
 //                     {review}
@@ -167,35 +167,54 @@ const Details = () => {
     fetchData();
   }, []);
 
+  const uploadImage = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    data.append("file", document.getElementById("profileImage").files[0]);
+    axios
+      .post("/api/uploadProfileImage", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("Image Uploaded Successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error uploading image:", error);
+      });
+  };
+
   if (!profileData) {
     return <h2>No data</h2>;
   }
 
-  const { 
-    name, 
-    bio, 
-    availability, 
-    hourlyRate, 
-    skills = [], 
-    languages = [], 
-    jobsApplied = [], 
-    jobsUndertaken = [], 
-    certifications = [], 
-    reviews = [], 
-    rating, 
-    ratingCount 
-  } = profileData;
+  const { name, bio, availability, hourlyRate, skills = [], languages = [], jobsApplied = [], jobsUndertaken = [], certifications = [], reviews = [], rating, ratingCount } = profileData;
 
   return (
     <div className="bg-black-100 p-10">
+      <div className="bg-white rounded-lg text-black m-10 p-10 ">
+        <form action="/uploadProfileImage" method="POST" encType="multipart/form-data">
+          Update Profile Image: <input type="file" id="profileImage" name="profileImage" /><br />
+          <button type="submit" className="btn btn-dark" onClick={uploadImage}>
+            Upload
+          </button>
+        </form>
+      </div>
       {/* Header Section */}
       <header className="bg-white shadow-md rounded-lg p-8 text-center mb-10">
         <h1 className="text-3xl font-bold text-gray-800">{name}</h1>
         <p className="text-lg text-gray-600">Freelancer & Developer</p>
         <div className="mt-4">
-          <a href={profileData.linkedIn} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">LinkedIn</a>
-          <a href={profileData.github} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">GitHub</a>
-          <a href={profileData.twitter} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">Twitter</a>
+          <a href={profileData.linkedIn} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">
+            LinkedIn
+          </a>
+          <a href={profileData.github} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">
+            GitHub
+          </a>
+          <a href={profileData.twitter} target="_blank" className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-red-700 mx-2  ">
+            Twitter
+          </a>
         </div>
       </header>
 
@@ -234,7 +253,7 @@ const Details = () => {
           {jobsApplied.length ? (
             <ul className="list-disc pl-6">
               {jobsApplied.map((job, index) => (
-                <JobCard key={job._id} job={job}/>
+                <JobCard key={job._id} job={job} />
               ))}
             </ul>
           ) : (
@@ -261,7 +280,9 @@ const Details = () => {
           {certifications.length ? (
             <ul className="list-disc pl-6">
               {certifications.map((certification, index) => (
-                <li key={index} className="text-gray-600">{certification}</li>
+                <li key={index} className="text-gray-600">
+                  {certification}
+                </li>
               ))}
             </ul>
           ) : (
@@ -292,12 +313,10 @@ const Details = () => {
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Contact Me</h2>
           <p className="text-gray-600">Availability: {availability || "Not specified"}</p>
           <p className="text-gray-600 mb-4">Hourly Rate: {hourlyRate || "Not specified"}</p>
-          
         </div>
       </section>
 
       {/* Footer Section */}
-      
     </div>
   );
 };

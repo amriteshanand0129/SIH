@@ -48,6 +48,7 @@ const JobPostForm = () => {
           skills: [],
           qualification: [],
         });
+        window.location.reload();
       })
       .catch((error) => {
         setMessage("Failed to post Job");

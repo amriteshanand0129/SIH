@@ -5,6 +5,9 @@ const Posted_Jobs = ({ job }) => {
   const [showModal, setShowModal] = useState(false);
   const [applications, setApplications] = useState([]);
 
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+
   const viewApplications = async () => {
     const url = `/api/getJobApplications/${job._id}`;
     try {
@@ -20,12 +23,14 @@ const Posted_Jobs = ({ job }) => {
     const url = `/api/assignJob/${job._id}/${applicant_id}`;
     try {
       const response = await axios.post(url);
-       // Assuming response data contains applications
+      // Assuming response data contains applications
+      setMessage(response.data.message);
+      setMessageType("success");
       setShowModal(false); // Show the modal
     } catch (error) {
       console.error("Error fetching job Applications:", error);
     }
-  }
+  };
 
   const closeModal = () => {
     setShowModal(false);
@@ -34,6 +39,8 @@ const Posted_Jobs = ({ job }) => {
 
   return (
     <>
+      {message && <div className={`message ${messageType === "success" ? "success" : "error"}`}>{message}</div>}
+
       <div className="flex space-x-4">
         <div className="flex-1 bg-gray-900 text-white hover:bg-gray-600 p-4 mt-4 rounded-lg shadow-md space-y-4">
           <div className="flex justify-between items-center">
@@ -93,14 +100,16 @@ const Posted_Jobs = ({ job }) => {
             <h2 className="text-xl font-bold mb-4">Job Applications</h2>
             {(applications?.applicants).length > 0 ? (
               <ul>
-                {(applications.applicants).map((applicant, index) => (
+                {applications.applicants.map((applicant, index) => (
                   <li key={index} className="mb-2">
                     <strong>Applicant Name:</strong> {applicant.name}
                     <br />
                     <strong>Rating:</strong> {applicant.rating}
                     <br />
                     <strong>Skills:</strong> {applicant.skills.join(", ")} <br></br>
-                    <button className="bg-orange-600 mt-4 text-white py-2 px-4 rounded-md mb-6 hover:bg-orange-700 mr-0" onClick={() => assignJob(applicant._id)}>Assign Job</button>
+                    <button className="bg-orange-600 mt-4 text-white py-2 px-4 rounded-md mb-6 hover:bg-orange-700 mr-0" onClick={() => assignJob(applicant._id)}>
+                      Assign Job
+                    </button>
                   </li>
                 ))}
               </ul>

@@ -42,7 +42,7 @@ const postJob = async (req, res) => {
 
 const getJobs = async (req, res) => {
   try {
-    const jobs = await job_model.find().populate("postedBy", "_id name");
+    const jobs = await job_model.find({assigned: false}).populate("postedBy", "_id name");
     res.status(200).send({
       jobs: jobs,
     });
